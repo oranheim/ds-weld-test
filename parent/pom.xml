@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+
+	<groupId>com.acme</groupId>
+	<artifactId>ds-weld-test-parent</artifactId>
+	<packaging>pom</packaging>
+	<version>1.0-SNAPSHOT</version>
+	<modelVersion>4.0.0</modelVersion>
+
+	<properties>
+		<container.unpack.directory>${java.io.tmpdir}/deltaspike-arquillian-containers</container.unpack.directory>
+
+		<weld.version>2.1.2.Final</weld.version>
+		<deltaspike.version>0.6-SNAPSHOT</deltaspike.version>
+
+		<!-- testing stuff -->
+		<junit.version>4.10</junit.version>
+		<arquillian.version>1.0.2.Final</arquillian.version>
+
+		<!-- Geronimo specs -->
+		<geronimo-atinject-1.0-spec.version>1.0</geronimo-atinject-1.0-spec.version>
+		<geronimo-jcdi-1.0-spec.version>1.0</geronimo-jcdi-1.0-spec.version>
+		<geronimo-interceptor-1.1-spec.version>1.0</geronimo-interceptor-1.1-spec.version>
+		<geronimo-servlet-2.5-spec.version>1.2</geronimo-servlet-2.5-spec.version>
+		<geronimo-servlet-3.0-spec.version>1.0</geronimo-servlet-3.0-spec.version>
+		<geronimo-el-2.2-spec.version>1.0.3</geronimo-el-2.2-spec.version>
+		<geronimo-validation-1.0-spec.version>1.1</geronimo-validation-1.0-spec.version>
+		<geronimo-jpa-2.0-spec.version>1.1</geronimo-jpa-2.0-spec.version>
+		<geronimo-jta-1.1-spec.version>1.1.1</geronimo-jta-1.1-spec.version>
+
+		<!-- JBoss specs -->
+		<version.org.jboss.bom>1.0.0.Final</version.org.jboss.bom>
+
+
+		<maven.jetty.plugin.version>7.1.5.v20100705</maven.jetty.plugin.version>
+		<maven.surefire.plugin.version>2.11</maven.surefire.plugin.version>
+		<maven.bundle.plugin.version>2.3.7</maven.bundle.plugin.version>
+		<maven.jar.plugin.version>2.4</maven.jar.plugin.version>
+		<maven.dependency.plugin.version>2.4</maven.dependency.plugin.version>
+		<maven.checkstyle.plugin.version>2.9.1</maven.checkstyle.plugin.version>
+		<maven.compiler.plugin.version>2.5</maven.compiler.plugin.version>
+		<maven.assembly.plugin.version>2.4</maven.assembly.plugin.version>
+
+		<hamcrest.version>1.3</hamcrest.version>
+
+		<jacoco.version>0.5.7.201204190339</jacoco.version>
+
+		<arquillian-weld.version>1.0.0.CR8</arquillian-weld.version>
+
+		<!-- validator related -->
+		<hibernate.validator.version>4.3.1.Final</hibernate.validator.version>
+		<bval.version>0.5</bval.version>
+
+		<undertow.io.version>1.0.0.Final</undertow.io.version>
+		<wildfly.version>8.0.0.Final</wildfly.version>
+		<cdicontainer.version>weld-${weld.version}</cdicontainer.version>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>Apache Repository</id>
+			<url>https://repository.apache.org/content/repositories/releases</url>
+		</repository>
+		<repository>
+			<id>Apache Snapshot Repository</id>
+			<url>https://repository.apache.org/content/repositories/snapshots</url>
+		</repository>
+	</repositories>
+    
+	<dependencyManagement>
+		<dependencies>
+			<!-- imports don't get inherited! -->
+			<dependency>
+				<groupId>org.jboss.arquillian</groupId>
+				<artifactId>arquillian-bom</artifactId>
+				<version>${arquillian.version}</version>
+				<scope>import</scope>
+				<type>pom</type>
+			</dependency>
+
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${junit.version}</version>
+				<scope>test</scope>
+			</dependency>
+
+			<!-- jboss specs -->
+			<dependency>
+				<groupId>org.jboss.spec</groupId>
+				<artifactId>jboss-javaee-web-7.0</artifactId>
+				<version>${version.org.jboss.bom}</version>
+				<type>pom</type>
+			</dependency>
+
+			<!-- ds stuff -->
+			<dependency>
+				<groupId>org.hamcrest</groupId>
+				<artifactId>hamcrest-library</artifactId>
+				<version>${hamcrest.version}</version>
+				<scope>test</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.deltaspike.core</groupId>
+				<artifactId>deltaspike-core-api</artifactId>
+				<version>${deltaspike.version}</version>
+				<scope>compile</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.deltaspike.core</groupId>
+				<artifactId>deltaspike-core-impl</artifactId>
+				<version>${deltaspike.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.deltaspike.modules</groupId>
+				<artifactId>deltaspike-security-module-api</artifactId>
+				<version>${deltaspike.version}</version>
+				<scope>compile</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.deltaspike.modules</groupId>
+				<artifactId>deltaspike-security-module-impl</artifactId>
+				<version>${deltaspike.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.deltaspike.modules</groupId>
+				<artifactId>deltaspike-jpa-module-api</artifactId>
+				<version>${deltaspike.version}</version>
+				<scope>compile</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.deltaspike.modules</groupId>
+				<artifactId>deltaspike-jpa-module-impl</artifactId>
+				<version>${deltaspike.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.deltaspike.modules</groupId>
+				<artifactId>deltaspike-servlet-module-api</artifactId>
+				<version>${deltaspike.version}</version>
+				<scope>compile</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.deltaspike.modules</groupId>
+				<artifactId>deltaspike-servlet-module-impl</artifactId>
+				<version>${deltaspike.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.deltaspike.modules</groupId>
+				<artifactId>deltaspike-data-module-api</artifactId>
+				<version>${deltaspike.version}</version>
+				<scope>compile</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.deltaspike.modules</groupId>
+				<artifactId>deltaspike-data-module-impl</artifactId>
+				<version>${deltaspike.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+
+			<!-- Dependencies for Java-SE -->
+			<dependency>
+				<groupId>org.apache.deltaspike.cdictrl</groupId>
+				<artifactId>deltaspike-cdictrl-api</artifactId>
+				<version>${deltaspike.version}</version>
+				<scope>compile</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.deltaspike.cdictrl</groupId>
+				<artifactId>deltaspike-cdictrl-owb</artifactId>
+				<version>${deltaspike.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.deltaspike.cdictrl</groupId>
+				<artifactId>deltaspike-cdictrl-weld</artifactId>
+				<version>${deltaspike.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.deltaspike.modules</groupId>
+				<artifactId>deltaspike-partial-bean-module-api</artifactId>
+				<version>${deltaspike.version}</version>
+				<scope>compile</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.deltaspike.modules</groupId>
+				<artifactId>deltaspike-partial-bean-module-impl</artifactId>
+				<version>${deltaspike.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.deltaspike.modules</groupId>
+				<artifactId>deltaspike-test-control-module-api</artifactId>
+				<version>${deltaspike.version}</version>
+				<scope>compile</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.deltaspike.modules</groupId>
+				<artifactId>deltaspike-test-control-module-impl</artifactId>
+				<version>${deltaspike.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.deltaspike.modules</groupId>
+				<artifactId>deltaspike-scheduler-module-api</artifactId>
+				<version>${deltaspike.version}</version>
+				<scope>compile</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.deltaspike.modules</groupId>
+				<artifactId>deltaspike-scheduler-module-impl</artifactId>
+				<version>${deltaspike.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.deltaspike.modules</groupId>
+				<artifactId>deltaspike-bean-validation-module-api</artifactId>
+				<version>${deltaspike.version}</version>
+				<scope>compile</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.deltaspike.modules</groupId>
+				<artifactId>deltaspike-bean-validation-module-impl</artifactId>
+				<version>${deltaspike.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.deltaspike.test</groupId>
+			<artifactId>test-utils</artifactId>
+			<version>${deltaspike.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- unit testing stuff -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.arquillian.junit</groupId>
+			<artifactId>arquillian-junit-container</artifactId>
+			<version>${arquillian.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>${maven.surefire.plugin.version}</version>
+					<configuration>
+						<systemProperties>
+							<org.apache.deltaspike.ProjectStage>UnitTest</org.apache.deltaspike.ProjectStage>
+							<cdicontainer.version>${cdicontainer.version}</cdicontainer.version>
+						</systemProperties>
+					</configuration>
+					<!-- added from ds parent pom -->
+					<dependencies>
+						<!-- We need to add this manually to get the category support for JUnit -->
+						<dependency>
+							<groupId>org.apache.maven.surefire</groupId>
+							<artifactId>surefire-junit47</artifactId>
+							<version>${maven.surefire.plugin.version}</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+				<plugin>
+					<artifactId>maven-dependency-plugin</artifactId>
+					<groupId>org.apache.maven.plugins</groupId>
+					<version>${maven.dependency.plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.felix</groupId>
+					<artifactId>maven-bundle-plugin</artifactId>
+					<version>${maven.bundle.plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>${maven.assembly.plugin.version}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<!-- added from ds parent pom -->
+					<archive>
+						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+						</manifest>
+					</archive>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>test-jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<inherited>true</inherited>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version>
+
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+
+		<profile>
+			<!-- use this profile to compile and test DeltaSpike with JBoss Weld -->
+			<id>Weld</id>
+
+			<properties>
+				<cdicontainer.version>weld-${weld.version}</cdicontainer.version>
+			</properties>
+
+
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<configuration>
+							<systemProperties>
+								<cdicontainer.version>${cdicontainer.version}</cdicontainer.version>
+							</systemProperties>
+							<!-- Ignore these groups because they don't work with embedded Weld -->
+							<excludedGroups>
+								org.apache.deltaspike.test.category.WebProfileCategory,
+								org.apache.deltaspike.test.category.FullProfileCategory,
+								org.apache.deltaspike.test.category.EnterpriseArchiveProfileCategory
+							</excludedGroups>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+
+			<dependencyManagement>
+				<dependencies>
+					<dependency>
+						<groupId>org.jboss.weld</groupId>
+						<artifactId>weld-core-bom</artifactId>
+						<version>${weld.version}</version>
+						<type>pom</type>
+						<scope>import</scope>
+					</dependency>
+				</dependencies>
+			</dependencyManagement>
+			<dependencies>
+				<dependency>
+					<groupId>javax.enterprise</groupId>
+					<artifactId>cdi-api</artifactId>
+					<scope>provided</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.jboss.weld</groupId>
+					<artifactId>weld-api</artifactId>
+					<scope>provided</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.jboss.weld</groupId>
+					<artifactId>weld-core</artifactId>
+					<scope>test</scope>
+				</dependency>
+				<dependency>
+					<groupId>javax.el</groupId>
+					<artifactId>el-api</artifactId>
+					<version>2.2</version>
+					<scope>test</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.apache.geronimo.specs</groupId>
+					<artifactId>geronimo-jta_1.1_spec</artifactId>
+					<version>1.1.1</version>
+					<scope>test</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.jboss.spec.javax.ejb</groupId>
+					<artifactId>jboss-ejb-api_3.1_spec</artifactId>
+					<scope>test</scope>
+				</dependency>
+				<dependency>
+					<groupId>javax.validation</groupId>
+					<artifactId>validation-api</artifactId>
+					<scope>test</scope>
+				</dependency>
+				<dependency>
+					<groupId>javax.persistence</groupId>
+					<artifactId>persistence-api</artifactId>
+					<scope>test</scope>
+				</dependency>
+				<dependency>
+					<groupId>javassist</groupId>
+					<artifactId>javassist</artifactId>
+					<version>3.12.0.GA</version>
+					<scope>test</scope>
+				</dependency>
+
+				<dependency>
+					<groupId>org.apache.geronimo.specs</groupId>
+					<artifactId>geronimo-interceptor_1.1_spec</artifactId>
+					<version>1.0</version>
+					<scope>provided</scope>
+				</dependency>
+
+				<!-- Test dependencies -->
+				<dependency>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-simple</artifactId>
+					<version>1.7.2</version>
+					<scope>test</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.hibernate</groupId>
+					<artifactId>hibernate-validator</artifactId>
+					<version>4.3.1.Final</version>
+					<scope>test</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.jboss.arquillian.container</groupId>
+					<artifactId>arquillian-weld-ee-embedded-1.1</artifactId>
+					<version>${arquillian-weld.version}</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+		</profile>
+
+	</profiles>
+</project>
