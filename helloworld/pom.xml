@@ -71,12 +71,14 @@
 			<scope>test</scope>
 		</dependency>
 
+        <!--
 		<dependency>
 			<groupId>org.apache.deltaspike.test</groupId>
 			<artifactId>test-utils</artifactId>
 			<version>${deltaspike.version}</version>
 			<scope>test</scope>
 		</dependency>
+		-->
 
 	</dependencies>
 
@@ -105,6 +107,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.4</version>
+                <!--
 				<executions>
 					<execution>
 						<goals>
@@ -112,6 +115,7 @@
 						</goals>
 					</execution>
 				</executions>
+				-->
 			</plugin>
 		</plugins>
 	</build>
