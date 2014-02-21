@@ -25,11 +25,11 @@ public class WeldTest {
     }
 
     @Inject
-    HelloWorld helloWorldInstance;
+    HelloWorld helloWorld;
 
     @Test
     public void should_say_hello() {
-        helloWorldInstance.sayHello("World");
+        helloWorld.sayHello("World");
     }
 }
 
